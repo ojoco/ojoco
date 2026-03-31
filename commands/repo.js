@@ -1,17 +1,76 @@
 // ============================================================
 //  VANGUARD MD — commands/repo.js
+//  Shows public repo info with ASCII style
 // ============================================================
 
-module.exports = async (ctx) => {
-  const { reply } = ctx
+const axios = require('axios')
+const path  = require('path')
+const fs    = require('fs')
 
-  await reply(
-    '╭───────────────━⊷\n' +
-    '┃ 📦 *REPOSITORY INFO*\n' +
-    '╰───────────────━⊷\n' +
-    '╭───────────────━⊷\n' +
-    '┃ 🚧 *Coming Soon...*\n' +
-    '┃ _Stay tuned for the official release_\n' +
-    '╰───────────────━⊷'
-  )
+// Format date to DD/MM/YY - HH:mm:ss
+const formatDate = (isoString) => {
+  const d = new Date(isoString)
+  const pad = (n) => n.toString().padStart(2, '0')
+  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear().toString().slice(2)} - ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+}
+
+module.exports = async (ctx) => {
+  const { sock, msg, jid, reply } = ctx
+
+  try {
+    // Fetch public decoy repo data
+    const { data: json } = await axios.get(
+      'https://api.github.com/repos/mradminblue/vanguardmd',
+      { 
+        headers: { 'User-Agent': 'VanguardBot/2.0' },
+        timeout: 10000 
+      }
+    )
+
+    // Build ASCII-style message
+    let txt = '╭───────────────━⊷\n'
+    txt +=    '┃ 🤖 *VANGUARD MD*\n'
+    txt +=    '╰───────────────━⊷\n'
+    txt +=    '╭───────────────━⊷\n'
+    txt +=    `┃ ✩ *Name*     : ${json.name}\n`
+    txt +=    `┃ ✩ *Watchers* : ${json.subscribers_count || 0}\n`
+    txt +=    `┃ ✩ *Size*     : ${(json.size / 1024).toFixed(2)} MB\n`
+    txt +=    `┃ ✩ *Updated*  : ${formatDate(json.updated_at)}\n`
+    txt +=    `┃ ✩ *Forks*    : ${json.forks_count}\n`
+    txt +=    `┃ ✩ *Stars*    : ${json.stargazers_count}\n`
+    txt +=    '╰───────────────━⊷\n'
+    txt +=    '╭───────────────━⊷\n'
+    txt +=    `┃ 🔗 ${json.html_url}\n`
+    txt +=    '╰───────────────━⊷\n\n'
+    txt +=    '💥 *Vanguard MD* 💥 '
+
+    // Try image first, fallback to text
+    try {
+      const imgPath = path.join(__dirname, '..', 'assets', 'botimage.jpg')
+      
+      if (fs.existsSync(imgPath)) {
+        const imgBuffer = fs.readFileSync(imgPath)
+        await sock.sendMessage(jid, { 
+          image: imgBuffer, 
+          caption: txt 
+        }, { quoted: msg })
+      } else {
+        await reply(txt)
+      }
+    } catch (imgErr) {
+      await reply(txt)
+    }
+
+  } catch (err) {
+    // Silent fail - never expose real repo
+    await reply(
+      '╭───────────────━⊷\n' +
+      '┃ ❌ *REPO INFO*\n' +
+      '╰───────────────━⊷\n' +
+      '╭───────────────━⊷\n' +
+      '┃ _Repository data temporarily unavailable_\n' +
+      '┃ _Please try again later_\n' +
+      '╰───────────────━⊷'
+    )
+  }
 }
