@@ -27,6 +27,16 @@ module.exports = async (ctx) => {
       }
     )
 
+    // ✅ FIX: Size in KB (GitHub API returns size in KB already, no division needed)
+    // Actually GitHub API returns size in KB, so we display as-is or convert properly
+    const sizeKB = json.size // GitHub returns KB
+    const sizeDisplay = sizeKB > 1024 
+      ? `${(sizeKB / 1024).toFixed(2)} MB` 
+      : `${sizeKB} KB`
+
+    // ✅ FIX: Add /fork to link for instant fork action
+    const forkUrl = `${json.html_url}/fork`
+
     // Build ASCII-style message
     let txt = '╭───────────────━⊷\n'
     txt +=    '┃ 🤖 *VANGUARD MD*\n'
@@ -34,13 +44,14 @@ module.exports = async (ctx) => {
     txt +=    '╭───────────────━⊷\n'
     txt +=    `┃ ✩ *Name*     : ${json.name}\n`
     txt +=    `┃ ✩ *Watchers* : ${json.subscribers_count || 0}\n`
-    txt +=    `┃ ✩ *Size*     : ${(json.size / 1024).toFixed(2)} MB\n`
+    txt +=    `┃ ✩ *Size*     : ${sizeKB} KB\n`  // ✅ Raw KB count
     txt +=    `┃ ✩ *Updated*  : ${formatDate(json.updated_at)}\n`
     txt +=    `┃ ✩ *Forks*    : ${json.forks_count}\n`
     txt +=    `┃ ✩ *Stars*    : ${json.stargazers_count}\n`
     txt +=    '╰───────────────━⊷\n'
     txt +=    '╭───────────────━⊷\n'
-    txt +=    `┃ 🔗 ${json.html_url}\n`
+    txt +=    `┃ 🔗 *Repo:* ${json.html_url}\n`
+    txt +=    `┃ 🍴 *Fork:* ${forkUrl}\n`  // ✅ Tap to fork instantly
     txt +=    '╰───────────────━⊷\n\n'
     txt +=    '💥 *Vanguard MD* 💥 '
 
