@@ -25,6 +25,12 @@
   }
 })()
 
+// ── Activate noise silencer FIRST ───────────────────────────
+require('./lib/noisesilencer')
+
+// ── Then your normal requires ───────────────────────────────
+
+
 // ── Core requires ─────────────────────────────────────────────
 const {
   default: makeWASocket,
@@ -44,6 +50,38 @@ const chalk      = require('chalk')
 const config     = require('./config')
 const defaults   = require('./defaults')
 const logger     = require('./lib/logger')
+// ── SWALLOW CRYPTO NOISE ────────────────────────────────────
+const originalLog = console.log
+const originalError = console.error
+const originalWarn = console.warn
+
+const isCryptoDump = (args) => {
+  const text = args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ')
+  return text.includes('chainKey') || 
+         text.includes('ephemeralKeyPair') || 
+         text.includes('registrationId') ||
+         text.includes('rootKey') ||
+         text.includes('baseKey') ||
+         text.includes('currentRatchet') ||
+         text.includes('<Buffer') ||
+         (text.includes('pubKey') && text.includes('privKey'))
+}
+
+console.log = (...args) => {
+  if (isCryptoDump(args)) return // SWALLOWED
+  originalLog.apply(console, args)
+}
+
+console.error = (...args) => {
+  if (isCryptoDump(args)) return // SWALLOWED
+  originalError.apply(console, args)
+}
+
+console.warn = (...args) => {
+  if (isCryptoDump(args)) return // SWALLOWED
+  originalWarn.apply(console, args)
+}
+
 const { startCleanupScheduler } = require('./lib/messageStore')
 
 const STARTUP_IMAGE  = path.join(__dirname, 'assets','backup', 'botimage.jpg')
@@ -311,7 +349,7 @@ async function startVanguard() {
     // ── CREATE SOCKET ─────────────────────────────────────
     const sock = makeWASocket({
       version,
-      logger:              pino({ level: 'silent' }),
+      logger:              pino({ level: 'fatal' }),
       printQRInTerminal:   !pairingCode,
       browser:             ['Ubuntu', 'Chrome', '20.0.04'],
       auth: {
