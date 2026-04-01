@@ -342,6 +342,7 @@ const menu =
 '│★ ' + p + 'play2\n' +
 '│★ ' + p + 'song\n' +
 '│★ ' + p + 'song2\n' +
+'│★ ' + p + 'spotify\n' +
 '│★ ' + p + 'telesticker\n' +
 '│★ ' + p + 'tiktok\n' +
 '│★ ' + p + 'video\n' +
