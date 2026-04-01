@@ -6,7 +6,7 @@
 module.exports = async (ctx) => {
   const { sock, msg, jid, reply, isSudo } = ctx
 
-  if (!isSudo) return reply('❌ Owner only!')
+  if (!isSudo) return reply('❌ Command Reserved For Owner And Sudos only!')
 
   const bar = (pct) => `[${'█'.repeat(pct / 10)}${'░'.repeat(10 - pct / 10)}] ${pct}%`
 
