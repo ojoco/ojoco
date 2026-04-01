@@ -243,6 +243,7 @@ const menu =
 '│★ ' + p + 'poll\n' +
 '│★ ' + p + 'promote\n' +
 '│★ ' + p + 'promactive\n' +
+'│★ ' + p + 'resetlink\n' +
 '│★ ' + p + 'setdesc\n' +
 '│★ ' + p + 'setgpp\n' +
 '│★ ' + p + 'setgroupname\n' +
