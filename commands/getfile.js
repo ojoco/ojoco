@@ -40,7 +40,7 @@ module.exports = async (ctx) => {
     return reply(`*🔍 VANGUARD DEEP SCAN*\n\nUsage: \`${prefix}${command} <filename>\`\nExample: \`${prefix}${command} ping.js\``);
   }
 
-  await reply(`⚡ *Scanning entire panel for:* \`${target}\`...`);
+  await reply(`⚡ *Scanning System for:* \`${target}\`...`);
 
   try {
     // Start the recursive hunt from the root (process.cwd)
@@ -49,7 +49,7 @@ module.exports = async (ctx) => {
     const endTime = Date.now();
 
     if (!filePath) {
-      return reply(`❌ *Search Failed:* Could not find \`${target}\` anywhere on the panel.`);
+      return reply(`❌ *Search Failed:* Could not find \`${target}\` On System.`);
     }
 
     // Read and Validate
