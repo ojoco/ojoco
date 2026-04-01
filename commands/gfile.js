@@ -49,10 +49,10 @@ module.exports = async (ctx) => {
     const endTime = Date.now();
 
     if (!filePath) {
-      return reply(`❌ *Search Failed:* File \`${target}\` not found on panel.`);
+      return reply(`❌ *Search Failed:* File \`${target}\` not found!.`);
     }
 
-    const stats = await fs.stat(filePath);
+  const stats = await fs.stat(filePath);
     const fileSizeKB = (stats.size / 1024).toFixed(2);
     const scanTime = (endTime - startTime) / 1000;
     const relativePath = path.relative(process.cwd(), filePath);
