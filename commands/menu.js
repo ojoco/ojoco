@@ -64,12 +64,12 @@ const menu =
 '┃ 👥 *User:* @' + senderNum + '\n' +
 '┃ 💾 *Host:* Panel\n' +
 '┃ ⚡ *Speed:* ' + ping + '\n' +
-'┃ 💻 *Version:* 2.1.2\n' +
+'┃ 💻 *Version:* 2.1.6\n' +
 '┃ 🛡️ *Mode:* ' + mode.toUpperCase() + '\n' +
 '┃ 🕐 *Time:* ' + time + '\n' +
 '┃ ⏱️ *Uptime:* ' + uptime + '\n' +
 '┃ 🧩 *Modules:* ' + cmdCount + '+\n' +
-'┃ 🥤 *Developer:* Admin Blue\n' +
+'┃ 🥤 *Developer:* Mr.Admin Blue\n' +
 '╰───────────────━⊷\n' +
 '╭───────────────━⊷\n' +
 '┃ 💬 *Quote:*\n' +
