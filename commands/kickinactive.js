@@ -82,7 +82,7 @@ module.exports = async (ctx) => {
         text: '❌ Failed to kick some users: ' + err.message
       })
     }
-  }, 5000)
+  }, 10000)
 
   // Store with normalized key
   setPendingKick(groupId, {
