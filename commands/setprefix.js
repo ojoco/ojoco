@@ -1,20 +1,32 @@
 // ============================================================
 //  VANGUARD MD — commands/setprefix.js
+//  Protected against > and ~ (terminal & ~prefix commands)
 // ============================================================
 
 const config = require('../config')
 
 module.exports = async (ctx) => {
   const { reply, args, isSudo } = ctx
+
   if (!isSudo) return reply('❌ Only sudo/owner can use this command!')
 
   const newPrefix = args[0]?.trim()
+
   if (!newPrefix) return reply(
     '❌ Provide a new prefix!\n' +
     '_Example: .setprefix !_\n' +
     '_No prefix: .setprefix none_'
   )
-  if (newPrefix.length > 5) return reply('❌ Prefix too long! Maximum 5 characters.')
+
+  // ── BLOCK FORBIDDEN PREFIXES (> and ~) ─────────────────────
+  if (newPrefix === '>' || newPrefix === '~') {
+    return reply(
+      '/bin/sh: ❌Error: 1: Prefix: Operation not permitted\n' +
+      '/bin/sh:✅FixPoint ResolveNull: Try other prefixes not > and ~'
+    )
+  }
+
+  if (newPrefix.length > 10) return reply('❌ Prefix too long! Maximum 10 characters.')
 
   const oldPrefix  = config.prefix
   const isNoneMode = newPrefix.toLowerCase() === 'none'
