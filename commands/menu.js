@@ -178,7 +178,9 @@ const menu =
 '│★ ' + p + 'antigroupmention\n' +
 '│★ ' + p + 'antilink\n' +
 '│★ ' + p + 'antimedia\n' +
+'│★ ' + p + 'antimedia\n' +
 '│★ ' + p + 'antisticker\n' +
+'│★ ' + p + 'resetlink\n' +
 '╰─┬────────❍\n' +
 '\n' +
 
@@ -339,6 +341,7 @@ const menu =
 '│★ ' + p + 'play2\n' +
 '│★ ' + p + 'song\n' +
 '│★ ' + p + 'song2\n' +
+'│★ ' + p + 'telesticker\n' +
 '│★ ' + p + 'tiktok\n' +
 '│★ ' + p + 'video\n' +
 '│★ ' + p + 'video2\n' +
