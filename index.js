@@ -208,7 +208,6 @@ const loadSessionFromId = async (sessionStr) => {
     throw new Error('Invalid format - must start with VANGUARD-MD;;;')
   }
   
-  // Extract pure Base64
   const base64Data = sessionStr.replace('VANGUARD-MD;;;', '')
   
   if (!base64Data || base64Data.length < 100) {
@@ -219,10 +218,7 @@ const loadSessionFromId = async (sessionStr) => {
   vprint.info(`Length: ${base64Data.length} chars`)
   
   try {
-    // Decode
     const credsBuffer = Buffer.from(base64Data, 'base64')
-    
-    // Verify it's valid JSON
     const credsJson = JSON.parse(credsBuffer.toString('utf8'))
     
     if (!credsJson || !credsJson.me || !credsJson.me.id) {
@@ -231,7 +227,6 @@ const loadSessionFromId = async (sessionStr) => {
     
     vprint.ok('Valid creds.json decoded')
     
-    // Clear and save
     fs.rmSync(SESSION_DIR, { recursive: true, force: true })
     fs.mkdirSync(SESSION_DIR, { recursive: true })
     
@@ -293,7 +288,7 @@ const buildStartupMessage = (isReturning) => {
     '⚡ *Commands:* ' + cmdCount,
     '🕐 *Time:* ' + time,
     '',
-    '💡 Tips: ' + prefix + 'setprefix, ' + prefix + 'public/' + prefix + 'private' + prefix + 'anticall off,
+    '💡 Tips: ' + prefix + 'setprefix, ' + prefix + 'public/' + prefix + 'private' + prefix + 'anticall off',
   ])
 }
 
@@ -453,7 +448,6 @@ async function startVanguard(phoneOverride = null) {
         vprint.warn('Closed. Status: ' + statusCode)
 
         if (statusCode === DisconnectReason.loggedOut) {
-          // Delete only the specified folders/files
           try {
             const pathsToWipe = [
               SESSION_DIR,
@@ -468,16 +462,9 @@ async function startVanguard(phoneOverride = null) {
             vprint.err('Cleanup failed: ' + err.message)
           }
 
-          // Keep the panel alive with a warning
           vprint.warn('⚠️ Session Logged Out Please Re-Authenticate ⚠️')
           vprint.blank()
           vprint.blank()
-
-
-
-                      
-
-          // DO NOT exit, just return to keep the process alive
           return
         }
 
@@ -517,9 +504,7 @@ async function startVanguard(phoneOverride = null) {
 
           if (ac.mode === 'block') {
             await sock.updateBlockStatus(callerJid, 'block')
-            await sock.sendMessage(callerJid, {
-              text: `🚫 *CALL BLOCKED*\n\nYou've been blocked.`
-            })
+            await sock.sendMessage(callerJid, { text: `🚫 *CALL BLOCKED*\n\nYou've been blocked.` })
             if (ac.notifyOwner && ownerJid) {
               await sock.sendMessage(ownerJid, {
                 text: `🚫 Blocked: @${callerJid.split('@')[0]}`,
