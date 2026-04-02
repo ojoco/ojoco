@@ -261,7 +261,11 @@ const border = (title, lines) => {
     (title ? '┃ *' + title + '*\n' : '') +
     lines.map(l => '┃ ' + l).join('\n') + '\n' +
     '╰───────────────━⊷\n' +
-    '> Made With Love By Admin Blue'
+    '╭───────────────━⊷\n' +
+    '┃Developer: Admin Blue   \n' +
+    '┃Dev Num: +256745626308  \n' +
+    '╰───────────────━⊷\n' +
+    '> _Vanguard MD is on Fire 🔥_'
   )
 }
 
@@ -273,7 +277,7 @@ const buildStartupMessage = (isReturning) => {
   const time = new Date().toLocaleString('en-KE', { timeZone: 'Africa/Nairobi', hour12: true })
 
   if (isReturning) {
-    return border('✅ BOT ONLINE', [
+    return border('✅ BOT ALIVE AND RESUMING', [
       '👑 *Owner:* +' + owner,
       '🔑 *Prefix:* ' + prefix,
       '📡 *Mode:* ' + mode.toUpperCase(),
@@ -282,14 +286,14 @@ const buildStartupMessage = (isReturning) => {
     ])
   }
 
-  return border('🎉 FRESH INSTALL', [
+  return border('🎉 FRESH INSTALL,WELCOME🤗', [
     '👑 *Owner:* +' + owner,
     '🔑 *Prefix:* ' + prefix,
     '📡 *Mode:* ' + mode.toUpperCase(),
     '⚡ *Commands:* ' + cmdCount,
     '🕐 *Time:* ' + time,
     '',
-    '💡 Tips: ' + prefix + 'setprefix, ' + prefix + 'public/' + prefix + 'private',
+    '💡 Tips: ' + prefix + 'setprefix, ' + prefix + 'public/' + prefix + 'private' + prefix + 'anticall off,
   ])
 }
 
