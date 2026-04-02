@@ -449,9 +449,28 @@ async function startVanguard(phoneOverride = null) {
         vprint.warn('Closed. Status: ' + statusCode)
 
         if (statusCode === DisconnectReason.loggedOut) {
-          wipeSession()
-          vprint.err('Logged out. Restart to re-authenticate.')
-          process.exit(1)
+          // Delete only the specified folders/files
+          try {
+            const pathsToWipe = [
+              SESSION_DIR,
+              path.join(__dirname, 'groupstore'),
+              path.join(__dirname, 'src'),
+              CONFIG_FILE
+            ]
+            for (const p of pathsToWipe) {
+              if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true })
+            }
+          } catch (err) {
+            vprint.err('Cleanup failed: ' + err.message)
+          }
+
+          // Keep the panel alive with a warning
+          vprint.warn('⚠️ Session Logged Out Please Re-Authenticate ⚠️')
+          vprint.blank()
+          vprint.info('You can now provide a new SESSION_ID or PHONE_NUMBER to reconnect.')
+
+          // DO NOT exit, just return to keep the process alive
+          return
         }
 
         if (shouldReconnect) {
@@ -534,22 +553,22 @@ async function launch() {
   vprint.banner('🤖  VANGUARD MD  🤖')
 
   if (hasExistingSession()) {
-    vprint.ok('Existing session found')
+    vprint.ok('Existing session found,Resuming Bot')
     vprint.blank()
     return startVanguard()
   }
 
-  vprint.info('No session — checking .env...')
+  vprint.info('No session files— checking .env...')
   vprint.blank()
 
   const envSessionId = (process.env.SESSION_ID || '').trim()
   const envPhone = cleanPhone(process.env.PHONE_NUMBER || '')
 
   if (envSessionId && envSessionId.startsWith('VANGUARD-MD;;;')) {
-    vprint.step('Session ID found — decoding...')
+    vprint.step('Session ID found — ...')
     try {
       await loadSessionFromId(envSessionId)
-      vprint.ok('Session decoded!')
+      vprint.ok('Session Loaded ✅!')
       vprint.blank()
       return startVanguard()
     } catch (err) {
@@ -575,7 +594,7 @@ async function launch() {
     vprint.banner('⚡  CONNECTION SETUP')
     vprint.divider()
     originalLog('')
-    originalLog(chalk.white('  How to connect?\n'))
+    originalLog(chalk.white(' Choose how to connect\n'))
     originalLog(chalk.cyan('  [1]') + chalk.white('  Session ID'))
     originalLog(chalk.cyan('  [2]') + chalk.white('  Phone Number'))
     originalLog('')
