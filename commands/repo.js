@@ -50,8 +50,8 @@ module.exports = async (ctx) => {
     txt +=    `┃ ✩ *Stars*    : ${json.stargazers_count}\n`
     txt +=    '╰───────────────━⊷\n'
     txt +=    '╭───────────────━⊷\n'
-    txt +=    `┃ 🔗 *Repo:* ${json.html_url}\n`
-    txt +=    `┃ 🍴 *Fork:* ${forkUrl}\n`  // ✅ Tap to fork instantly
+    txt +=    `┃ 🔗 *Fork and Star The Repo*\n`
+    txt +=    `┃ 🖇️ *Repo:* ${forkUrl}\n`  // ✅ Tap to fork instantly
     txt +=    '╰───────────────━⊷\n\n'
     txt +=    '💥 *Vanguard MD* 💥 '
 
