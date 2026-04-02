@@ -467,7 +467,11 @@ async function startVanguard(phoneOverride = null) {
           // Keep the panel alive with a warning
           vprint.warn('⚠️ Session Logged Out Please Re-Authenticate ⚠️')
           vprint.blank()
-          vprint.info('You can now provide a new SESSION_ID or PHONE_NUMBER to reconnect.')
+          vprint.blank()
+
+
+
+                      
 
           // DO NOT exit, just return to keep the process alive
           return
