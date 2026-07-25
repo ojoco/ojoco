@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 const activeSessions = new Map()
 const sseClients = new Map()
 
-const BOT_IMAGE_PATH = path.join(__dirname, 'assets', 'botimage.jpg')
+const BOT_IMAGE_PATH = path.join(__dirname, 'assets', '32af7181-e6de-4841-bcce-f6aa1926564d.jpeg')
 
 // ====================== SSE ======================
 app.get('/events', (req, res) => {
